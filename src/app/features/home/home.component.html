@@ -2,5 +2,13 @@
   <mat-sidenav opened mode="side">
     <nby-sidenav></nby-sidenav>
   </mat-sidenav>
-  <mat-sidenav-content>Main</mat-sidenav-content>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      {{(activeNav$ | async)?.name}}
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+  </mat-sidenav-content>
 </mat-sidenav-container>

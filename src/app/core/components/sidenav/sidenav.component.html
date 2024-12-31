@@ -4,9 +4,9 @@
   </div>
   <div class="sidenav-content">
     <mat-nav-list>
-      @for (link of navs(); track link) {
-      <mat-list-item [activated]="link.isActive" (click)="setActive(link)">
-        <a matListItemTitle [routerLink]="link.link">{{ link.name }}</a>
+      @for (link of (navs$ | async)?.navs; track link) {
+      <mat-list-item routerLinkActive="mdc-list-item--activated" [routerLink]="link.link" (click)="setActive(link)">
+        <a matListItemTitle>{{ link.name }}</a>
       </mat-list-item>
       }
     </mat-nav-list>

@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NbySidenavItem } from './sidenav';
+import { Store } from '@ngrx/store';
+import { onActiveNavChange } from '@core/store/navs/navs.action';
+import { NbyActiveNavState, NbyNavsState } from '@core/store/navs/navs.reducer';
 
 @Component({
   selector: 'nby-sidenav',
   imports: [
     CommonModule,
     RouterLink,
+    RouterLinkActive,
     MatListModule
   ],
   templateUrl: './sidenav.component.html',
@@ -16,23 +20,12 @@ import { NbySidenavItem } from './sidenav';
 })
 export class SidenavComponent {
 
-  navs = signal<NbySidenavItem[]>([
-    { link: 'products', name: 'Products', isActive: true },
-    { link: 'categories', name: 'Product Categories', isActive: false },
-    { link: 'inventory', name: 'Inventory', isActive: false },
-    { link: 'sales', name: 'Sales', isActive: false },
-    { link: 'customers', name: 'Customers', isActive: false }
-  ]);
+  readonly store: Store<{navState: NbyNavsState, activeNavState: NbyActiveNavState}> = inject(Store);
 
-  setActive(selectedItem: NbySidenavItem): void {
-    const links = this.navs();
-    links.map((x) => {
-      if (x.link === selectedItem.link) {
-        x.isActive = true;
-      } else {
-        x.isActive = false;
-      }
-    });
-    this.navs.set(links);
+  navs$ = this.store.select('navState');
+  activeNav$ = this.store.select('activeNavState')
+
+  setActive(selectedNav: NbySidenavItem): void {
+    this.store.dispatch(onActiveNavChange({selectedNav}));
   }
 }
