@@ -1,0 +1,14 @@
+<div class="flex-col">
+  <div class="sidenav-header">
+    .
+  </div>
+  <div class="sidenav-content">
+    <mat-nav-list>
+      @for (link of navs(); track link) {
+      <mat-list-item [activated]="link.isActive" (click)="setActive(link)">
+        <a matListItemTitle [routerLink]="link.link">{{ link.name }}</a>
+      </mat-list-item>
+      }
+    </mat-nav-list>
+  </div>
+</div>
